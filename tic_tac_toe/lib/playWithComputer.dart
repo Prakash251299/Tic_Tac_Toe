@@ -2,8 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'hamburger.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 var player1 = "Computer";
 var player2 = "You";
+var hamburger = 0;
+
 class CompScreen extends StatefulWidget {
   var mq;
   CompScreen(this. mq){
@@ -12,8 +17,42 @@ class CompScreen extends StatefulWidget {
   State createState() => CompScreenState();
 }
 
-class CompScreenState extends State<CompScreen> {
-  // var a = '';
+class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
+
+  // animation controller
+  late AnimationController _controller;
+  late AnimationController _controller1;
+  // animation color
+  late Animation<Color?> _color;
+  late Animation<Color?> _color1;
+
+  @override
+  void initState() {
+    super.initState();
+    // _controller = AnimationController(
+    //   duration: const Duration(seconds: 5),
+    //   vsync: this,
+    // )..repeat(reverse: true);
+    _controller1 = AnimationController(
+      duration: const Duration(seconds: 5),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    // color tween
+    // _color =
+        // ColorTween(begin: Colors.white, end: Colors.amber).animate(_controller);
+    _color1 =
+        ColorTween(begin: Color.fromARGB(255, 78, 136, 165), end: Color.fromARGB(255, 37, 41, 43)).animate(_controller1);
+  }
+
+  @override
+  void dispose() {
+    // _controller.dispose();
+    _controller1.dispose();
+    super.dispose();
+  }
+
+  var swap=0;
   var myText = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
       Message = "Your turn",
       gameEnd = 0;
@@ -466,11 +505,20 @@ class CompScreenState extends State<CompScreen> {
     // }
     return InkWell(
         child: 
+        AnimatedBuilder(
+          animation: _color1,
+          builder: (BuildContext _, Widget? __) {
+            return 
+
+
+
         Container(
         decoration: BoxDecoration(
-          // color: Colors.purple[200],
+
+          // color: _color.value,
           color: fill[i]!=10?Colors.red:tapped==i?Colors.green:
-          Colors.black87,
+          _color1.value,
+          // color: fill[i]!=10?Colors.red:tapped==i?Colors.green:
           // Color.fromARGB(255, 61, 88, 62),
           border: Border.all(width: 0.2, color: Colors.white),
         ),
@@ -518,72 +566,20 @@ class CompScreenState extends State<CompScreen> {
             //   child: Text(myText[i], style: TextStyle(color: Colors.white)),
             // )
         //     // child:Text(i.toString(),style: TextStyle(color: Colors.red),),
-            ),
+            // ),
+            );
+
+
+            }),
 
         onTap: () async {
+          _check();
           // setState(() {
             // tapped = i;
           // });
-          if(level==2){
-          var a,k=10;
-          if(gameEnd==0){
-            // setState((){
-              myText[i] = cont;
-            await _check();
-            if(gameEnd==1){
-              return;
-            }
-              // myText[await optimalMoveForComputer('o')] = 'x';
-            // });
-            setState((){
-              k=10;
-            });
-
-            int w = forceStep('o');
-            if(w!=10){
-              myText[w] = 'o';
-              // tapped = w;
-              // print(w);
-              _check();
-              return;
-            }
-              k = forceStep('x');
-              // print(k);
-            if(gameEnd==0){
-              if(k==10){
-                if(await optimalMoveForComputer('o')==10){
-
-                  for(int i=0;i<myText.length;i++){
-                    if(myText[i]==' '){
-                      setState(() {
-                        myText[i] = 'o';
-                      });
-                      break;
-                    }
-                  }
-                }else{
-                  a = await optimalMoveForComputer('o');
-                  // print(a);
-                  setState(() {
-                    myText[a] = 'o';
-                  });
-                  await _check();
-                }
-              }else{
-                // print(k);
-                setState(() {
-                  myText[k] = 'o';
-                });
-              }
-            }
-          }
-        }
-
-        // if(level==1){
-          if(level==1){
-            var a,b,k=10;
-            // tapped=1;
-            // print("hi");
+          if(myText[i]==' '){
+            if(level==2){
+            var a,k=10;
             if(gameEnd==0){
               // setState((){
                 myText[i] = cont;
@@ -600,7 +596,7 @@ class CompScreenState extends State<CompScreen> {
               int w = forceStep('o');
               if(w!=10){
                 myText[w] = 'o';
-                tapped = w;
+                // tapped = w;
                 // print(w);
                 _check();
                 return;
@@ -615,116 +611,179 @@ class CompScreenState extends State<CompScreen> {
                       if(myText[i]==' '){
                         setState(() {
                           myText[i] = 'o';
-                          tapped = i;
                         });
+                        _check();
                         break;
                       }
                     }
                   }else{
                     a = await optimalMoveForComputer('o');
-                    b = await optimalMoveForComputer('x');
-                    if(b>a){
-                      setState(() {
-                        a = b;
-                      });
-                    }
                     // print(a);
                     setState(() {
                       myText[a] = 'o';
-                      tapped = a;
                     });
                     await _check();
                   }
-                }
-                else{
+                }else{
                   // print(k);
                   setState(() {
                     myText[k] = 'o';
-                    tapped = k;
+                    _check();
                   });
                 }
               }
             }
           }
-        // }
 
-
-        if(level==3){
-            var a,b,k=10,c=10;
-            // tapped=1;
-            // print("hi");
-            if(gameEnd==0){
-              // setState((){
-                myText[i] = cont;
-              await _check();
-              if(gameEnd==1){
-                return;
-              }
-                // myText[await optimalMoveForComputer('o')] = 'x';
-              // });
-              setState((){
-                k=10;
-              });
-
-              int w = forceStep('o');
-              if(w!=10){
-                myText[w] = 'o';
-                tapped = w;
-                // print(w);
-                _check();
-                return;
-              }
-              k = forceStep('x');
-              // print(k);
+          // if(level==1){
+            if(level==1){
+              var a,b,k=10;
+              // tapped=1;
+              // print("hi");
               if(gameEnd==0){
-                if(k==10){
-                  // var c = _cornerCheck('x');
-                  // if(c!=10){
-                  //   myText[c] = 'o';
-                  //   return;
-                  // }
-                  if(await optimalMoveForComputer('o')==10){
-                    for(int i=0;i<myText.length;i++){
-                      if(myText[i]==' '){
-                        setState(() {
-                          myText[i] = 'o';
-                          tapped = i;
-                        });
-                        break;
+                // setState((){
+                  myText[i] = cont;
+                await _check();
+                if(gameEnd==1){
+                  return;
+                }
+                  // myText[await optimalMoveForComputer('o')] = 'x';
+                // });
+                setState((){
+                  k=10;
+                });
+
+                int w = forceStep('o');
+                if(w!=10){
+                  myText[w] = 'o';
+                  tapped = w;
+                  // print(w);
+                  _check();
+                  return;
+                }
+                  k = forceStep('x');
+                  // print(k);
+                if(gameEnd==0){
+                  if(k==10){
+                    if(await optimalMoveForComputer('o')==10){
+
+                      for(int i=0;i<myText.length;i++){
+                        if(myText[i]==' '){
+                          setState(() {
+                            myText[i] = 'o';
+                            tapped = i;
+                          });
+                          break;
+                        }
                       }
-                    }
-                  }else{
-                    a = await optimalMoveForComputer('o');
-                    b = await optimalMoveForComputer('x');
-                    c = _cornerCheck('x');
-                    if(c!=10){
-                      myText[c] = 'o';
-                      return;
-                    }
-                    if(b>a){
+                    }else{
+                      a = await optimalMoveForComputer('o');
+                      b = await optimalMoveForComputer('x');
+                      if(b>a){
+                        setState(() {
+                          a = b;
+                        });
+                      }
+                      // print(a);
                       setState(() {
-                        a = b;
+                        myText[a] = 'o';
+                        tapped = a;
                       });
+                      await _check();
                     }
-                    // print(a);
+                  }
+                  else{
+                    // print(k);
                     setState(() {
-                      myText[a] = 'o';
-                      tapped = a;
+                      myText[k] = 'o';
+                      tapped = k;
+                      _check();
                     });
-                    c = _cornerCheck('x');
-                    if(c!=10){
-                      myText[c] = 'o';
-                      return;
-                    }
-                    await _check();
                   }
                 }
-                else{
-                  // print(k);
-                  setState(() {
-                    myText[k] = 'o';
-                    tapped = k;
-                  });
+              }
+            }
+          // }
+
+
+          if(level==3){
+              var a,b,k=10,c=10;
+              // tapped=1;
+              // print("hi");
+              if(gameEnd==0){
+                // setState((){
+                  myText[i] = cont;
+                await _check();
+                if(gameEnd==1){
+                  return;
+                }
+                  // myText[await optimalMoveForComputer('o')] = 'x';
+                // });
+                setState((){
+                  k=10;
+                });
+
+                int w = forceStep('o');
+                if(w!=10){
+                  myText[w] = 'o';
+                  tapped = w;
+                  // print(w);
+                  _check();
+                  return;
+                }
+                k = forceStep('x');
+                // print(k);
+                if(gameEnd==0){
+                  if(k==10){
+                    // var c = _cornerCheck('x');
+                    // if(c!=10){
+                    //   myText[c] = 'o';
+                    //   return;
+                    // }
+                    if(await optimalMoveForComputer('o')==10){
+                      for(int i=0;i<myText.length;i++){
+                        if(myText[i]==' '){
+                          setState(() {
+                            myText[i] = 'o';
+                            tapped = i;
+                          });
+                          break;
+                        }
+                      }
+                    }else{
+                      a = await optimalMoveForComputer('o');
+                      b = await optimalMoveForComputer('x');
+                      c = _cornerCheck('x');
+                      if(c!=10){
+                        myText[c] = 'o';
+                        return;
+                      }
+                      if(b>a){
+                        setState(() {
+                          a = b;
+                        });
+                      }
+                      // print(a);
+                      setState(() {
+                        myText[a] = 'o';
+                        tapped = a;
+                      });
+                      c = _cornerCheck('x');
+                      if(c!=10){
+                        myText[c] = 'o';
+                        return;
+                      }
+                      await _check();
+                    }
+                  }
+                  else{
+                    // print(k);
+                    setState(() {
+                      myText[k] = 'o';
+                      tapped = k;
+                      _check();
+                    });
+                  }
                 }
               }
             }
@@ -736,58 +795,331 @@ class CompScreenState extends State<CompScreen> {
   }
 
   Widget _bottomOptions(){
-    return 
+    return Material(
+      // shape:Border.all(BorderSide(color:Colors.red)),
+      // shape:Border.all(width:2,color:Colors.black.withOpacity(1.0)),
+      child:
     GestureDetector(
-      child: Container(
+      child: 
+      Container(
         height:50,
-        width:widget.mq.width,
+        // width:widget.mq.width,
         decoration:BoxDecoration(
-          color:Color.fromARGB(255, 78, 76, 76),
+          border: Border.all(width:2,color:Colors.black.withOpacity(1.0)),
+      // shape:Border.all(width:2,color:Colors.black87),
+          // color:Colors.black87.withOpacity(0.3),
+          // color:Color.fromARGB(255, 78, 76, 76),
+          color:Colors.black87.withOpacity(1.0),
+
           // border:BorderRadius.only(top:Radius.circular(3))),
         ),
         // border:,
         child:
-        Row(children: [ 
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [ 
+
+          // MouseRegion(
+          //   cursor: SystemMouseCursors.click,
+          //   child: GestureDetector(
+          //     child:Container(
+          //     width: MediaQuery.of(context).size.width/2-2,
+          //     child: Center(child:Icon(Icons.start,color:Colors.white)),
+          //     // child: Center(child:Text("Restart",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none))),
+          //     ),
+          //     onTap: () async {
+          //       // setState((){
+          //         await restart();
+          //       // });
+          //     },
+          //   ),
+          // ),
+
+
+
+        // Padding(padding: EdgeInsets.only(bottom:5),child:
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child:
           GestureDetector(
             child:Container(
             width: MediaQuery.of(context).size.width/2-2,
             decoration: BoxDecoration(
-              border: Border(right: BorderSide(width:2,color:Colors.white)),
+              // border: Border(right: BorderSide(width:2,color:Colors.white)),
             ),
-            child: Center(child:Text("Level ${level}",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none))),
-            ),
-            onTap: (){
-              setState((){
-                    if(level==1){
-                      level=2;
-                    }else{
-                      if(level==2){
+            child: Center(
+              child:
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                IconButton(
+                  onPressed: (){
+                    setState((){
+                      if(level==1){
                         level=3;
                       }else{
-                        level = 1;
+                        level--;
                       }
-                    }
-                  });
-                  restart();
-            },
-          ),
-          GestureDetector(
-            child:Container(
-            width: MediaQuery.of(context).size.width/2-2,
-            child: Center(child:Text("Restart",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none))),
+                    });
+                    restart();
+                  }, 
+                  icon: Icon(Icons.navigate_before,color:Colors.white),
+                ),
+                Spacer(),
+                Text("Level ${level}",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none)),
+                Spacer(),
+                // Padding(padding:EdgeInsets.only(left:5),child:
+                
+                IconButton(
+                  // size:,
+                  onPressed: (){
+                    setState((){
+                      if(level==3){
+                        level=1;
+                      }else{
+                        level++;
+                      }
+                    });
+                    restart();
+                  }, 
+                  icon: Icon(Icons.navigate_next,color:Colors.white),
+                ),
+                // Icon(Icons.navigate_next,color:Colors.white),
+                // ),
+              ]),
             ),
-            onTap: () async {
-
-              await restart();
+            ),
+            onTap: (){
+              // setState((){
+              //       if(level==1){
+              //         level=2;
+              //       }else{
+              //         if(level==2){
+              //           level=3;
+              //         }else{
+              //           level = 1;
+              //         }
+              //       }
+              //     });
+              //     restart();
             },
           ),
+          // ),
+        ),
+
+
+          // MouseRegion(
+          //   cursor: SystemMouseCursors.click,
+          //   child: GestureDetector(
+          //     child:Container(
+          //     width: MediaQuery.of(context).size.width/2-2,
+          //     child: Center(child:Text("Restart",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none))),
+          //     ),
+          //     onTap: () async {
+          //       // setState((){
+          //         await restart();
+          //       // });
+          //     },
+          //   ),
+          // ),
+
+
+
         ]),
+      ),
       ),
     );
   }
 
+
+  Widget hamburgerOptions(){
+    // for(int i=0;i<9999;i++){
+    //   if(i%1000==0)
+    //   _opacity();
+    // }
+    var mq = MediaQuery.of(context).size;
+    // hamburger==1;
+    // var k=0;
+    return 
+      // Scaffold(
+      // body: 
+      Container(
+        alignment: Alignment.center,
+        // color: Colors.black87,
+        child: AnimatedBuilder(
+          animation: _color1,
+          builder: (BuildContext _, Widget? __) {
+            return Container(
+              child:
+              // width: 300,
+              // height: 300,
+            //   decoration:
+            //       BoxDecoration(color: _color.value, shape: BoxShape.circle),
+            // );
+        //   },
+        // ),
+
+
+
+
+    // Column(children: [
+
+
+
+
+      Card(
+        color: _color.value,
+        // color:Colors.red.withOpacity(opacity),
+        // margin: EdgeInsets.symmetric(horizontal:mq.width*0.04,vertical:mq.height*0.01),
+          shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(15)),
+        child: 
+        ListTile(
+          title: Center(child:
+          GestureDetector(child:
+            Container(
+              // color:Colors.green,
+              child:
+              // Row(
+                // mainAxisAlignment: ,
+                // children: [
+                Text("Source code",style: TextStyle(fontSize: mq.width>600?600*3/100:mq.width*3/100),),
+            ),
+            onTap: (){
+              launch('https://github.com/Prakash251299/Tic_Tac_Toe');
+              // print("asjhd");
+            },
+          ),
+            // ]),
+          ),
+        ),
+      ),
+      );
+          },
+        ),
+      );
+  }
+
+  Widget _hamburger(){
+    var mq = MediaQuery.of(context).size;
+    // var k=0;
+    return 
+    GestureDetector(child:
+    Container(
+      // height:20,
+      // width:200,
+      // color:Colors.red,
+          // margin: EdgeInsets.symmetric(horizontal:mq.width*0.04,vertical:mq.height*0.01),
+          // shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(15)),
+          child: 
+          Column(children: [
+            if (hamburger == 1) ...{
+            // if (k == 0) ...{
+                          Container(
+                            // height: MediaQuery.of(context).size.height <= 200
+                            //     ? 200
+                            //     : MediaQuery.of(context).size.height,
+                            height: MediaQuery.of(context).size.height/2,
+                            width: MediaQuery.of(context).size.width <= 240
+                                ? 240 * 35 / 100
+                                : MediaQuery.of(context).size.width >= 550
+                                    ? 550 * 35 / 100
+                                    : MediaQuery.of(context).size.width *
+                                        35 /
+                                        100,
+                            decoration:BoxDecoration(
+                              // color: Colors.blueGrey,
+
+                            ),
+
+
+                            // color: Colors.blueGrey,
+                            child: Stack(
+                                alignment: Alignment.bottomCenter,
+                                // alignment: Alignment.topRight,
+                                children: [
+                                  // AnimatedPositioned(
+                                  //   // width: hamburger,
+                                  //   top: hamburger==1?200:50,
+                                  //   // left:mq.width*.25,
+                                  //   right:hamburger==1?50:200,
+                                  //   left: hamburger==1?50:200,
+                                  //   // width:widget.mq.width*0.5,
+                                  //   // height:widget.mq.height*0.5,
+                                  //   duration:const Duration(seconds:3),
+                                  //   curve: Curves.fastOutSlowIn,
+                                  //   child:
+                                  // //   Text("Uihsadj"),
+                                  // // ),
+                                  GestureDetector(child:
+                                  Container(
+                                    // height: 200,
+                                    // width: 200,
+                                    // color:Color.fromARGB(255, 12, 8, 8),
+                                    // child:Text("gjh"),
+
+
+                                    margin: EdgeInsets.only(
+                                        bottom:
+                                            MediaQuery.of(context).size.width <=
+                                                    240
+                                                ? 240 * 9 / 100
+                                                : MediaQuery.of(context)
+                                                            .size
+                                                            .width >=
+                                                        600
+                                                    ? 600 * 9 / 100
+                                                    : MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                        9 /
+                                                        100),
+
+
+                                    child: ListView.builder(
+                                        itemCount: 3,
+                                        itemBuilder: (c, i) {
+                                          return 
+                                          MouseRegion(
+                                            cursor:SystemMouseCursors.click,
+                                            child:
+                                            Column(children: [
+                                              hamburgerOptions(),
+                                            ],),
+                                          );
+
+
+
+                                        }),
+                                  ),
+
+                                  ),
+                                  // ),
+
+                                  // hamburgerOptions(),
+                                  // GestureDetector(
+                                  //   child: Text("Close"),
+                                  //   onTap: (){
+                                  //     setState(() {
+                                  //       hamburger = 0;
+                                  //     });
+                                  //   },
+                                  // ),
+                                ]),
+                          ),
+                        },
+          ],)
+    ),
+    onTap: (){
+      setState(() {
+        hamburger = 0;
+      });
+    },
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
+    var selected = 0;
     // var h = widget.mq.height;
     // var w = widget.mq.width;
     return 
@@ -795,123 +1127,414 @@ class CompScreenState extends State<CompScreen> {
     Stack(
       alignment:Alignment.bottomCenter,
       children:[
-        Container(
-          // decoration: BoxDecoration(
-          //   gradient:LinearGradient(colors:[Colors.white,Colors.black]),
-          // ),
-          child:
-    Scaffold(
 
-      appBar:
-      PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: 
+        // Container(
+        //         height:200,
+        //         width:200,
+        //         color:Colors.red,
+        //       ),
+
+        GestureDetector(
+          child: 
         Container(
-          // decoration:BoxDecoration(
-        //     gradient: LinearGradient(colors: [Colors.white,Colors.black],),
-        //   ),
-          child:
-        AppBar(
-          centerTitle: true,
-          
-          backgroundColor: Color.fromARGB(255, 78, 76, 76),
-          // preferredSize: ,
-          actions: [
-            Padding(padding: EdgeInsets.only(right:10),
-            child:
-            Icon(Icons.menu),),
-          ],
-          title: Text("Tic Tack Toe"),
+            // decoration: BoxDecoration(
+            //   gradient:LinearGradient(colors:[Colors.white,Colors.black]),
+            // ),
+            color:Colors.black,
+            child: Scaffold(
+
+              extendBodyBehindAppBar: true,
+              // backgroundColor: Colors.black87.withOpacity(0.7),
+              // backgroundColor: Colors.black87.withOpacity(1),
+              appBar: 
+              // PreferredSize(
+              //   preferredSize: Size.fromHeight(50),
+                // child: Container(
+
+                  // decoration:BoxDecoration(
+                  //     gradient: LinearGradient(colors: [Colors.white,Colors.black],),
+                  //   ),
+                  // child: 
+                  AppBar(
+                    centerTitle: true,
+
+                    // backgroundColor: Color.fromARGB(255, 78, 76, 76).withOpacity(0),
+                    backgroundColor: Colors.black87.withOpacity(0.0),
+                    elevation:1,
+                    // preferredSize: ,
+                    actions: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 10,top: 3),
+                        child: Column(children: [
+                          IconButton(
+                            icon: Icon(Icons.info_outline),
+                            onPressed: (){
+                              launch('https://github.com/Prakash251299/Tic_Tac_Toe');
+                            },
+                          ),
+
+                          // if (hamburger == 0) ...{
+                          //   IconButton(
+                          //     icon: Icon(Icons.menu),
+                          //     onPressed: () {
+                          //       setState(() {
+                          //         hamburger = 1;
+                          //       });
+                          //     },
+                          //   ),
+                          // }
+                        ]),
+                        // Icon(Icons.menu),
+                      ),
+                    ],
+                    title: Text("Tic Tack Toe",style: TextStyle(color:Color.fromARGB(255, 127, 240, 105)),),
+                  ),
+                // ),
+              // ),
+              // BoxDecoration()
+              // backgroundColor: Colors.grey,
+              body: Container(
+
+                // decoration: BoxDecoration(
+                //     gradient: LinearGradient(colors: [
+                //   Colors.black87,
+                //   Colors.black87,
+                //   Colors.black87,
+                //   Colors.black87
+                // ])),
+
+
+
+                color: Colors.black87.withOpacity(1.0),
+                // height: MediaQuery.of(context).size.height <= 400
+                // ? 400
+                // : MediaQuery.of(context).size.height,
+                // margin: EdgeInsets.all(MediaQuery.of(context).size.width * 3 / 100),
+                child: Column(
+                    // alignment: Alignment.bottomCenter,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      // Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Padding(padding: EdgeInsets.only(left:10,right:10),child:
+                      //       Text(
+                      //         player1 + ' : o     ',
+                      //         style: TextStyle(
+                      //             color: Colors.blue[100],
+                      //             // fontSize: h<w?h*8/100:w*8/100,
+
+                      //             fontSize:
+                      //                 MediaQuery.of(context).size.width > 450
+                      //                     ? 450 * 5 / 100
+                      //                     : MediaQuery.of(context).size.width *
+                      //                         5 /
+                      //                         100),
+                      //       ),),
+                      //       Spacer(),
+                      //       Padding(padding: EdgeInsets.only(left:10,right:10),child:
+                      //       Text(
+                      //         player2 + ' : x',
+                      //         style: TextStyle(
+                      //             color: Colors.blue[100],
+                      //             fontSize:
+                      //                 MediaQuery.of(context).size.width > 450
+                      //                     ? 450 * 5 / 100
+                      //                     : MediaQuery.of(context).size.width *
+                      //                         5 /
+                      //                         100),
+                      //       ),),
+                      //     ]
+                      //   ),
+
+                      Padding(padding: EdgeInsets.only(top:10,bottom:10),
+                      child:
+                      Column(children: [
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(padding: EdgeInsets.only(bottom:10),child:
+                            Text(
+                              player1 + ' : o     ',
+                              style: TextStyle(
+                                  color: Colors.blue[100],
+                                  // fontSize: h<w?h*8/100:w*8/100,
+
+                                  fontSize:
+                                      MediaQuery.of(context).size.width > 450
+                                          ? 450 * 5 / 100
+                                          : MediaQuery.of(context).size.width *
+                                              5 /
+                                              100),
+                            ),),
+                            // Spacer(),
+                            // Padding(
+                            //   padding:EdgeInsets.only(right:15),
+                            //   child: IconButton(
+                            //     icon: Icon(Icons.swap_horiz,color:Colors.white),
+                            //     onPressed: (){
+
+                            //   },)
+                            // ),
+
+                            // Spacer(),
+                            Padding(padding: EdgeInsets.only(bottom:10),child:
+                            Text(
+                              player2 + ' : x',
+                              style: TextStyle(
+                                  color: Colors.blue[100],
+                                  fontSize:
+                                      MediaQuery.of(context).size.width > 450
+                                          ? 450 * 5 / 100
+                                          : MediaQuery.of(context).size.width *
+                                              5 /
+                                              100),
+                            ),),
+                          ]
+                        ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _button(0),
+                          _button(1),
+                          _button(2),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _button(3),
+                          _button(4),
+                          _button(5),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _button(6),
+                          _button(7),
+                          _button(8),
+                        ],
+                      ),
+                      ])),
+
+
+                      Row(
+                        children: [
+                          Text(
+                            Message,
+                            style: TextStyle(
+                                color: Message[Message.length-1]=='s'||Message[Message.length-1]=='d'?Colors.red:Colors.blue[100],
+                                fontSize:
+                                    MediaQuery.of(context).size.width > 450
+                                        ? 450 * 5 / 100
+                                        : MediaQuery.of(context).size.width *
+                                            5 /
+                                            100),
+                          )
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      // Padding(padding: EdgeInsets.only(top: 10)),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+
+                      // ]),
+                    ]),
+              ),
+            ),
+          ),
+          onTap: () {
+            setState(() {
+              hamburger = 0;
+            });
+          },
         ),
+
+      Padding(padding: EdgeInsets.only(bottom:MediaQuery.of(context).size.height<=450?10:20),child: 
+        _bottomOptions(),
       ),
-      ),
-      // BoxDecoration()
-      // backgroundColor: Colors.grey,
-      body: Container(
-        decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.black87,Colors.black87,Colors.black87,Colors.black87])),
-        // color: Colors.grey,
-        // height: MediaQuery.of(context).size.height <= 400
-            // ? 400
-            // : MediaQuery.of(context).size.height,
-        // margin: EdgeInsets.all(MediaQuery.of(context).size.width * 3 / 100),
-        child:
-            new Column(
-              // alignment: Alignment.bottomCenter,
-              mainAxisAlignment: MainAxisAlignment.center, 
-              children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children:[
-              Text(
-                player1+' : o     ',style: TextStyle(
-                  color: Colors.blue[100],
-                  // fontSize: h<w?h*8/100:w*8/100,
 
 
-                    fontSize: MediaQuery.of(context).size.width > 450
-                        ? 450 * 5 / 100
-                        : MediaQuery.of(context).size.width * 5 / 100
-                ),
-              ),
-              Text(
-                player2+' : x',style: TextStyle(
-                    color: Colors.blue[100],
-                    fontSize: MediaQuery.of(context).size.width > 450
-                        ? 450 * 5 / 100
-                        : MediaQuery.of(context).size.width * 5 / 100),
-              ),
-              ]),
-          new Row(
-            children: [
+      
 
-              Text(
-                Message,
-                style: TextStyle(
-                    color: Colors.blue[100],
-                    fontSize: MediaQuery.of(context).size.width > 450
-                        ? 450 * 5 / 100
-                        : MediaQuery.of(context).size.width * 5 / 100),
-              )
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
+
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   children: [
+      //     Stack(
+      //       // alignment: Alignment.topCenter,
+      //       // mainAxisAlignment: MainAxisAlignment.start,
+      //       children: [
+      //         _hamburger(),
+      //     ]),
+      //   ]),
+
+
+      // SizedBox(
+      // width: 200,
+      // height: 350,
+      // child: 
+      //   Stack(
+      //   children: <Widget>[
+      //     AnimatedPositioned(
+      //       width: selected==0 ? 200 : 50.0,
+      //       height: selected==0 ? 50.0 : 200.0,
+      //       top: selected==0 ? 50.0 : 150.0,
+      //       duration: const Duration(seconds: 2),
+      //       curve: Curves.fastOutSlowIn,
+      //       child: GestureDetector(
+      //         onTap: () {
+      //           print("Tapped");
+      //           setState(() {
+      //             if(selected==0)
+      //             selected = 1;
+      //             else
+      //             selected = 0;
+      //           });
+      //         },
+      //         child: const ColoredBox(
+      //           color: Colors.blue,
+      //           child: Center(child: Text('Tap me')),
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
+      // ),
+
+
+      // Padding(padding: EdgeInsets.only(right: 20,bottom: 20),
+      //   child:Row(
+      //     mainAxisAlignment:MainAxisAlignment.end,
+      //     children: [
+      //       // SizedBox(
+      //       //   width:MediaQuery.of(context).size.width<=450?450*10/100:MediaQuery.of(context).size.width*10/100,
+      //       //   height:MediaQuery.of(context).size.width<=450?450*10/100:MediaQuery.of(context).size.width*10/100,
+      //       //   // height:widget.mq.width*10/100,
+      //       //   // width:100,
+      //       //   child:
+      //     FloatingActionButton(
+      //       backgroundColor: Color.fromARGB(255, 54, 54, 54),
+      //       onPressed: () async {
+      //         await restart();
+      //       },
+      //       hoverColor: Colors.red,
+      //       // hoverElevation: 5,
+      //       // onFocus
+      //       child: Icon(Icons.restart_alt_rounded),
+      //     ),
+      //       // ),
+      //   ]),
+      // ),
+
+      // Padding(padding: EdgeInsets.only(left: 20,bottom: 20),
+      //   child:Row(
+      //     mainAxisAlignment:MainAxisAlignment.start,
+      //     children: [
+      //     FloatingActionButton(
+      //       backgroundColor: Color.fromARGB(255, 54, 54, 54),
+      //       onPressed: () async {
+      //         await restart();
+      //       },
+      //       hoverColor: Colors.red,
+      //       // hoverElevation: 5,
+      //       // onFocus
+      //       child: Icon(Icons.restart_alt_rounded),
+      //     ),
+      //     // Spacer(),
+      //     FloatingActionButton(
+      //       backgroundColor: Color.fromARGB(255, 54, 54, 54),
+      //       onPressed: () async {
+      //         await restart();
+      //       },
+      //       hoverColor: Colors.red,
+      //       // hoverElevation: 5,
+      //       // onFocus
+      //       child: Icon(Icons.restart_alt_rounded),
+      //     ),
+      //   ]),
+      // ),
+      
+      // Padding(padding: EdgeInsets.only(right: 0,bottom: 0),
+      //   child:Row(
+      //     mainAxisAlignment:MainAxisAlignment.end,
+      //     children: [
+      //     FloatingActionButton(
+      //       backgroundColor: Color.fromARGB(255, 54, 54, 54),
+      //       onPressed: () async {
+      //         await restart();
+      //       },
+      //       hoverColor: Colors.red,
+      //       // hoverElevation: 5,
+      //       // onFocus
+      //       child: Icon(Icons.restart_alt_rounded),
+      //     ),
+      //   ]),
+      // ),
+
+    Padding(padding: EdgeInsets.only(left:20, bottom: 20),
+    child:
+    Align(alignment: Alignment.bottomLeft,
+      child:FloatingActionButton(
+        heroTag: null,
+            backgroundColor: Color.fromARGB(255, 54, 54, 54),
+            onPressed: () async {
+              await restart();
+              setState(() {
+                if(swap==0){
+                  swap=1;
+                  myText[4] = 'o';
+                  tapped = 4;
+                }else{
+                  swap=0;
+                }
+              });
+            },
+            hoverColor: Colors.red,
+            // hoverElevation: 5,
+            // onFocus
+            child: Icon(Icons.swap_horiz,color:Colors.white),
           ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _button(0),
-              _button(1),
-              _button(2),
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _button(3),
-              _button(4),
-              _button(5),
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _button(6),
-              _button(7),
-              _button(8),
-            ],
-          ),
-          // Padding(padding: EdgeInsets.only(top: 10)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            
-          ]),
-        ]),
-      ),
-      ),
+        ),
     ),
 
+    Padding(padding: EdgeInsets.only(right:20, bottom: 20),
+    child:
+    Align(alignment: Alignment.bottomRight,
+      child:FloatingActionButton(
+        heroTag: null,
+            backgroundColor: Color.fromARGB(255, 54, 54, 54),
+            onPressed: () async {
+              await restart();
+              if(swap==1){
+                var c;
+                c=player2;
+                player2=player1;
+                player1=c;
+                Message = player2+"'s turn";
+                myText[4] = 'o';
+                tapped = 4;
+              }
+            },
+            hoverColor: Colors.red,
+            // hoverElevation: 5,
+            // onFocus
+            child: Icon(Icons.restart_alt_rounded,color:Colors.white),
+          ),
+        ),
+        ),
 
-      _bottomOptions(),
+
+
+
+
+
+
 
       ]),
     );

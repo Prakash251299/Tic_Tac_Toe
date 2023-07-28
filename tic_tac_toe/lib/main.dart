@@ -30,67 +30,17 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  // Widget _bottomOptions(){
-  //   return
-  //   GestureDetector(
-  //     child: Container(
-  //       height:50,
-  //       // width:widget.mq.width,
-  //       decoration:BoxDecoration(
-  //         color:Color.fromARGB(255, 78, 76, 76),
-  //         // border:BorderRadius.only(top:Radius.circular(3))),
-  //       ),
-  //       // border:,
-  //       child:
-  //       Row(children: [
-  //         MouseRegion(
-  //           cursor: SystemMouseCursors.click,
-  //           child:
-  //         GestureDetector(
-  //           child:Container(
-  //           width: MediaQuery.of(context).size.width/2-2,
-  //           child: Center(child:Text("Start",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none))),
-  //           ),
-  //           onTap: () async {
-
-  //           },
-  //         ),
-  //         ),
-  //         MouseRegion(
-  //           cursor: SystemMouseCursors.click,
-  //           child:
-  //         GestureDetector(
-  //           child:Container(
-  //           width: MediaQuery.of(context).size.width/2-2,
-  //           child: Center(child:Text("Computer",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none))),
-  //           ),
-  //           onTap: () async {
-
-  //           },
-  //         ),
-  //         ),
-  //       ]),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
     var mq = MediaQuery.of(context).size;
     return SafeArea(
       child:
-          // Stack(children: [
-          // Positioned.fill(
-          //     // width:2000,
-          //     // height:1000,
-          //     child:
-          //     Image(
-          //       image: AssetImage('images/ttt1.jpeg'),
-          //       fit:BoxFit.cover,
-          //     ),
-          //   ),
 
-          Stack(alignment: Alignment.bottomCenter, children: [
+          Stack(
+            // alignment: Alignment.bottomCenter, 
+            alignment: Alignment.center, 
+            children: [
         Positioned.fill(
           // width:2000,
           // height:1000,
@@ -99,21 +49,7 @@ class MyAppState extends State<MyApp> {
             fit: BoxFit.cover,
           ),
         ),
-        // SizedBox(
-        //   width:MediaQuery.of(context).size.width,
-        //   height:MediaQuery.of(context).size.height,
-        //   child:Image.asset('images/ttt1.jpeg'),
-        //   // fit:BoxFit.,
-        // ),
-        // Image.asset('images/ttt1.jpeg'),
-        // Image.asset('images/ttt2.jpeg'),
-        // Image(image: 'C://Users//Ishu//AndroidStudioProjects//tic_tac_toe//assets//images//tic_tac_toe_image.png'),
         Container(
-          // color:Colors.red,
-          // decoration: BoxDecoration(
-          //   // gradient: LinearGradient(colors: [Colors.red,Colors.orange]),
-          //   // gradient: LinearGradient(colors: [Colors.red,Colors.orange]),
-          // ),
           child: Scaffold(
             backgroundColor: Colors.black87.withOpacity(0.7),
             body: Center(
@@ -195,100 +131,44 @@ class MyAppState extends State<MyApp> {
             ),          ),
         ),
 
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     MouseRegion(
-        //       cursor: SystemMouseCursors.click,
-        //       child: GestureDetector(
-        //         child: Container(
-        //           height: 50,
-        //           width: MediaQuery.of(context).size.width / 2 - 2,
-        //           decoration: BoxDecoration(
-        //             border: Border(
-        //                 right: BorderSide(width: 2, color: Colors.white)),
-        //             color: Color.fromARGB(255, 78, 76, 76),
+        // Container(
+        //   color:Colors.orangeAccent,
+        //   height: 200,
+        //   width: 200,
+        //   child: 
+        //   // Column(children: [
+        //     // Text("Name"),
+        //     Material(child:
+        //     TextField (  
+        //       decoration: InputDecoration(  
+        //         // border: InputBorder.none,  
+        //         labelText: 'Enter Name',  
+        //         hintText: 'Enter Your Name'  
+        //       ),  
+        //     ),
+        //     ),
+        //   // ]),
+        // ),
+
+
+        // Padding(
+        //         padding: EdgeInsets.only(left: 30, right: 30, top: 150),
+        //         child: TextField(
+        //           decoration: InputDecoration(
+        //             prefixIcon: Icon(Icons.search),
+        //             enabledBorder: OutlineInputBorder(
+        //               borderSide: BorderSide(
+        //                   color: Colors.orangeAccent, width: 4.0),
+        //               borderRadius: const BorderRadius.all(
+        //                 const Radius.circular(30.0),
+        //               ),
+        //             ),
         //           ),
-        //           child: Center(
-        //               child: Text("Two players",
-        //                   style: TextStyle(
-        //                       fontSize: 20,
-        //                       color: Colors.white,
-        //                       decoration: TextDecoration.none))),
         //         ),
-        //         onTap: () {
-        //           _textController.text = '';
-        //           _textController1.text = '';
-        //           Navigator.of(context).push(
-        //             MaterialPageRoute(
-        //               builder: (context) => screen1(),
-        //             ),
-        //           );
-        //         },
         //       ),
-        //     ),
-        //     MouseRegion(
-        //       cursor: SystemMouseCursors.click,
-        //       child: GestureDetector(
-        //         child: Container(
-        //           height: 50,
-        //           width: MediaQuery.of(context).size.width / 2 - 2,
-        //           color: Color.fromARGB(255, 78, 76, 76),
-        //           child: Center(
-        //               child: Text("Computer",
-        //                   style: TextStyle(
-        //                       fontSize: 20,
-        //                       color: Colors.white,
-        //                       decoration: TextDecoration.none))),
-        //         ),
-        //         onTap: () {
-        //           _textController.text = '';
-        //           _textController1.text = '';
-        //           Navigator.of(context).push(
-        //             MaterialPageRoute(
-        //               builder: (context) => CompScreen(mq),
-        //             ),
-        //           );
-        //         },
-        //       ),
-        //     ),
 
-        //     // Text('data'),
-        //   ],
-        // )
 
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        // GestureDetector(
-        //       child:Container(
-        //         // color:Colors.red,
-        //       width: MediaQuery.of(context).size.width,
-        //       // child:Center(
-        //         child:Text("Start",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none))
-        //         // ),
-        //       ),
-        //       onTap: () async {
-
-        //         // await restart();
-        //       },
-        //     ),
-        // ]),
-
-        // GestureDetector(
-        //       child:Container(
-        //       width: MediaQuery.of(context).size.width/2-2,
-        //       child: Center(child:Text("Computer",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none))),
-        //       ),
-        //       onTap: () async {
-
-        //         // await restart();
-        //       },
-        //     ),
       ]),
-
-      // ),
-      // ]),
     );
   }
 }
@@ -467,6 +347,9 @@ class screen1State extends State<screen1> with TickerProviderStateMixin {
         fill[2] = 2;
         gameEnd = 1;
       }
+      if(gameEnd==1){
+        return;
+      }
       count = 0;
       for (var j = 0; j < 9; j++) {
         if (myText[j] != ' ') {
@@ -492,7 +375,10 @@ class screen1State extends State<screen1> with TickerProviderStateMixin {
             // color: Colors.purple[200],
             // color: fill[i] != 10 ? Colors.red : Color.fromARGB(255, 61, 88, 62),
             // color: fill[i] != 10 ? Colors.red : Color.fromARGB(255, 37, 41, 43),
-            color: fill[i] != 10 ? Colors.red : _color.value,
+
+
+            color: fill[i] != 10 ? Colors.red.withOpacity(0.5) : _color.value,
+            // color: fill[i] != 10 ? Colors.amber : _color.value,
 
 
             // color: fill[i]!=10?Colors.red:tapped==i?Colors.green:
@@ -780,49 +666,16 @@ class screen1State extends State<screen1> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      // Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       Padding(padding: EdgeInsets.only(left:10,right:10),child:
-                      //       Text(
-                      //         player1 + ' : o     ',
-                      //         style: TextStyle(
-                      //             color: Colors.blue[100],
-                      //             // fontSize: h<w?h*8/100:w*8/100,
-
-                      //             fontSize:
-                      //                 MediaQuery.of(context).size.width > 450
-                      //                     ? 450 * 5 / 100
-                      //                     : MediaQuery.of(context).size.width *
-                      //                         5 /
-                      //                         100),
-                      //       ),),
-                      //       Spacer(),
-                      //       Padding(padding: EdgeInsets.only(left:10,right:10),child:
-                      //       Text(
-                      //         player2 + ' : x',
-                      //         style: TextStyle(
-                      //             color: Colors.blue[100],
-                      //             fontSize:
-                      //                 MediaQuery.of(context).size.width > 450
-                      //                     ? 450 * 5 / 100
-                      //                     : MediaQuery.of(context).size.width *
-                      //                         5 /
-                      //                         100),
-                      //       ),),
-                      //     ]
-                      //   ),
-
                       Padding(padding: EdgeInsets.only(top:10,bottom:10),
                       child:
                       Column(children: [
-
+                        Stack(children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(padding: EdgeInsets.only(bottom:10),child:
+                            Padding(padding: EdgeInsets.only(bottom:10,right:10),child:
                             Text(
-                              player1 + ' : o     ',
+                              player1 + ' : o',
                               style: TextStyle(
                                   color: Colors.blue[100],
                                   // fontSize: h<w?h*8/100:w*8/100,
@@ -847,8 +700,31 @@ class screen1State extends State<screen1> with TickerProviderStateMixin {
                                               5 /
                                               100),
                             ),),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.end,
+                            //   children: [
+                            //   Icon(Icons.edit,color:Colors.white),
+                            // ],)
                           ]
                         ),
+                        // Padding(padding:EdgeInsets.only(right:10,bottom:5),child:
+                        // Row(
+                        //       mainAxisAlignment: MainAxisAlignment.end,
+                        //       children: [
+                        //         IconButton(
+                        //           onPressed: (){
+
+                        //           }, 
+                        //           icon: Icon(Icons.edit,color:Colors.white)
+                        //         ),
+                        //       // Icon(Icons.edit,color:Colors.white),
+                        //     ],)
+
+                        // ),
+                        
+                        
+                        
+                        ]),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

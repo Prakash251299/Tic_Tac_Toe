@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'main.dart';
@@ -8,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 var player1 = "Computer";
 var player2 = "You";
 var hamburger = 0;
+var com = 'o', you = 'x';
 
 class CompScreen extends StatefulWidget {
   var mq;
@@ -57,13 +59,14 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
       Message = "Your turn",
       gameEnd = 0;
   var cont = 'x';
-  var level = 1;
+  var level = 0;
   var fill = [10, 10, 10, 10, 10, 10, 10, 10, 10], count = 0;
   int tapped = 10;
   restart() {
     setState(() {
       Message = "Your turn";
-      cont = 'x';
+      // cont = swap==1?you:com;
+      // cont = you;
       for (var j = 0; j < 9; j++) {
         myText[j] = ' ';
         fill[j] = 10;
@@ -189,6 +192,10 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
         fill[2] = 2;
         gameEnd = 1;
       }
+      if(gameEnd==1){
+        tapped=10;
+        return;
+      }
       count = 0;
       for (var j = 0; j < 9; j++) {
         if (myText[j] != ' ') {
@@ -196,6 +203,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
         }
       }
       if (count == 9) {
+        // Message = Message[Message.length-1]!='n'?'Tied':Message;
         Message = 'Tied';
         gameEnd = 1;
       }
@@ -323,7 +331,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
     // Message = "Your turn";
     max = 0;
     currMax = 0;
-    for(int i=0;i<9;i++){
+    for(int i=0;i<9;i++){ // added equal in (i<9)
       if(myText[i]==' '){
         currMax = heuristicFun(myText,i+1,ch);
         // stdout.write("${currMax} ");
@@ -333,7 +341,6 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
         }
       }
     }
-    // print("${max} ${maxer}");
     return maxer;
   }
 
@@ -516,7 +523,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
         decoration: BoxDecoration(
 
           // color: _color.value,
-          color: fill[i]!=10?Colors.red:tapped==i?Colors.green:
+          color: fill[i]!=10?Colors.red.withOpacity(0.5):tapped==i?Colors.green:
           _color1.value,
           // color: fill[i]!=10?Colors.red:tapped==i?Colors.green:
           // Color.fromARGB(255, 61, 88, 62),
@@ -593,41 +600,45 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                 k=10;
               });
 
-              int w = forceStep('o');
+              int w = forceStep(com);
               if(w!=10){
-                myText[w] = 'o';
+                myText[w] = com;
+                tapped = w;
                 // tapped = w;
                 // print(w);
                 _check();
                 return;
               }
-                k = forceStep('x');
+                k = forceStep(you);
                 // print(k);
               if(gameEnd==0){
                 if(k==10){
-                  if(await optimalMoveForComputer('o')==10){
+                  if(await optimalMoveForComputer(com)==10){
 
                     for(int i=0;i<myText.length;i++){
                       if(myText[i]==' '){
                         setState(() {
-                          myText[i] = 'o';
+                          myText[i] = com;
+                          tapped = i;
                         });
                         _check();
                         break;
                       }
                     }
                   }else{
-                    a = await optimalMoveForComputer('o');
+                    a = await optimalMoveForComputer(com);
                     // print(a);
                     setState(() {
-                      myText[a] = 'o';
+                      myText[a] = com;
+                      tapped = a;
                     });
                     await _check();
                   }
                 }else{
                   // print(k);
                   setState(() {
-                    myText[k] = 'o';
+                    myText[k] = com;
+                    tapped = k;
                     _check();
                   });
                 }
@@ -653,32 +664,33 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                   k=10;
                 });
 
-                int w = forceStep('o');
+                int w = forceStep(com);
                 if(w!=10){
-                  myText[w] = 'o';
+                  myText[w] = com;
                   tapped = w;
                   // print(w);
                   _check();
                   return;
                 }
-                  k = forceStep('x');
+                  k = forceStep(you);
                   // print(k);
                 if(gameEnd==0){
                   if(k==10){
-                    if(await optimalMoveForComputer('o')==10){
+                    if(await optimalMoveForComputer(com)==10){
 
                       for(int i=0;i<myText.length;i++){
                         if(myText[i]==' '){
                           setState(() {
-                            myText[i] = 'o';
+                            myText[i] = com;
                             tapped = i;
                           });
+                          _check();
                           break;
                         }
                       }
                     }else{
-                      a = await optimalMoveForComputer('o');
-                      b = await optimalMoveForComputer('x');
+                      a = await optimalMoveForComputer(com);
+                      b = await optimalMoveForComputer(you);
                       if(b>a){
                         setState(() {
                           a = b;
@@ -686,7 +698,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                       }
                       // print(a);
                       setState(() {
-                        myText[a] = 'o';
+                        myText[a] = com;
                         tapped = a;
                       });
                       await _check();
@@ -695,7 +707,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                   else{
                     // print(k);
                     setState(() {
-                      myText[k] = 'o';
+                      myText[k] = com;
                       tapped = k;
                       _check();
                     });
@@ -703,7 +715,31 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                 }
               }
             }
-          // }
+            
+
+
+            if(level==0){
+              if(gameEnd==0){
+                myText[i] = cont;
+                await _check();
+                if(gameEnd==1){
+                  return;
+                }
+                Random random = new Random();
+                int r;
+                for(;;){
+                  r = random.nextInt(9);
+                  if(myText[r]==' '){
+                    myText[r] = com;
+                    tapped = r;
+                    break;
+                  }
+                }
+                await _check();
+              }
+            }
+
+
 
 
           if(level==3){
@@ -723,15 +759,15 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                   k=10;
                 });
 
-                int w = forceStep('o');
+                int w = forceStep(com);
                 if(w!=10){
-                  myText[w] = 'o';
+                  myText[w] = com;
                   tapped = w;
                   // print(w);
                   _check();
                   return;
                 }
-                k = forceStep('x');
+                k = forceStep(you);
                 // print(k);
                 if(gameEnd==0){
                   if(k==10){
@@ -740,22 +776,24 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                     //   myText[c] = 'o';
                     //   return;
                     // }
-                    if(await optimalMoveForComputer('o')==10){
+                    if(await optimalMoveForComputer(com)==10){
                       for(int i=0;i<myText.length;i++){
                         if(myText[i]==' '){
                           setState(() {
-                            myText[i] = 'o';
+                            myText[i] = com;
                             tapped = i;
                           });
+                          _check();
                           break;
                         }
                       }
                     }else{
-                      a = await optimalMoveForComputer('o');
-                      b = await optimalMoveForComputer('x');
-                      c = _cornerCheck('x');
+                      a = await optimalMoveForComputer(com);
+                      b = await optimalMoveForComputer(you);
+                      c = _cornerCheck(you);
                       if(c!=10){
-                        myText[c] = 'o';
+                        myText[c] = com;
+                        tapped = c;
                         return;
                       }
                       if(b>a){
@@ -765,12 +803,13 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                       }
                       // print(a);
                       setState(() {
-                        myText[a] = 'o';
+                        myText[a] = com;
                         tapped = a;
                       });
-                      c = _cornerCheck('x');
+                      c = _cornerCheck(you);
                       if(c!=10){
-                        myText[c] = 'o';
+                        myText[c] = com;
+                        tapped = c;
                         return;
                       }
                       await _check();
@@ -779,7 +818,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                   else{
                     // print(k);
                     setState(() {
-                      myText[k] = 'o';
+                      myText[k] = com;
                       tapped = k;
                       _check();
                     });
@@ -839,7 +878,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
 
         // Padding(padding: EdgeInsets.only(bottom:5),child:
           MouseRegion(
-            cursor: SystemMouseCursors.click,
+            // cursor: SystemMouseCursors.click,
             child:
           GestureDetector(
             child:Container(
@@ -855,7 +894,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                 IconButton(
                   onPressed: (){
                     setState((){
-                      if(level==1){
+                      if(level==0){
                         level=3;
                       }else{
                         level--;
@@ -866,7 +905,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                   icon: Icon(Icons.navigate_before,color:Colors.white),
                 ),
                 Spacer(),
-                Text("Level ${level}",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none)),
+                Text("Level ${level+1}",style:TextStyle(fontSize: 20,color:Colors.white,decoration: TextDecoration.none)),
                 Spacer(),
                 // Padding(padding:EdgeInsets.only(left:5),child:
                 
@@ -875,7 +914,7 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                   onPressed: (){
                     setState((){
                       if(level==3){
-                        level=1;
+                        level=0;
                       }else{
                         level++;
                       }
@@ -1255,9 +1294,9 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(padding: EdgeInsets.only(bottom:10),child:
+                            Padding(padding: EdgeInsets.only(bottom:10,right:10),child:
                             Text(
-                              player1 + ' : o     ',
+                              'Computer' + ' : ${com}',
                               style: TextStyle(
                                   color: Colors.blue[100],
                                   // fontSize: h<w?h*8/100:w*8/100,
@@ -1280,9 +1319,9 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
                             // ),
 
                             // Spacer(),
-                            Padding(padding: EdgeInsets.only(bottom:10),child:
+                            Padding(padding: EdgeInsets.only(bottom:10,left:5),child:
                             Text(
-                              player2 + ' : x',
+                              'You' + ' : ${you}',
                               style: TextStyle(
                                   color: Colors.blue[100],
                                   fontSize:
@@ -1477,6 +1516,9 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
       //   ]),
       // ),
 
+
+
+    /* Swapping */
     Padding(padding: EdgeInsets.only(left:20, bottom: 20),
     child:
     Align(alignment: Alignment.bottomLeft,
@@ -1488,10 +1530,35 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
               setState(() {
                 if(swap==0){
                   swap=1;
-                  myText[4] = 'o';
-                  tapped = 4;
+                  var c;
+                  c=player2;
+                  player2=player1;
+                  player1=c;
+                  // tapped = 4;
+                  com = 'x';
+                  you = 'o';
+                  cont = you;
+
+                  Random random = new Random();
+                  int r;
+                  for(;;){
+                    r = random.nextInt(9);
+                    if(myText[r]==' '){
+                      myText[r] = com;
+                      tapped = r;
+                      break;
+                    }
+                  }
+                  // myText[4] = com;
                 }else{
                   swap=0;
+                  var c;
+                  c=player2;
+                  player2=player1;
+                  player1=c;
+                  com = 'o';
+                  you = 'x';
+                  cont = you;
                 }
               });
             },
@@ -1503,6 +1570,8 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
         ),
     ),
 
+
+    /* Restart */
     Padding(padding: EdgeInsets.only(right:20, bottom: 20),
     child:
     Align(alignment: Alignment.bottomRight,
@@ -1511,18 +1580,36 @@ class CompScreenState extends State<CompScreen> with TickerProviderStateMixin {
             backgroundColor: Color.fromARGB(255, 54, 54, 54),
             onPressed: () async {
               await restart();
-              if(swap==1){
-                var c;
-                c=player2;
-                player2=player1;
-                player1=c;
-                Message = player2+"'s turn";
-                myText[4] = 'o';
-                tapped = 4;
-              }
+              setState(() {
+                if(swap==1){
+                  // var c;
+                  // c=player2;
+                  // player2=player1;
+                  // player1=c;
+                  // com = 'x';
+                  // you = 'o';
+                  Message = player2+"r turn";
+                  Random random = new Random();
+                  int r;
+                  for(;;){
+                    r = random.nextInt(9);
+                    if(myText[r]==' '){
+                      myText[r] = com;
+                      tapped = r;
+                      break;
+                    }
+                  }
+                  // myText[4] = com;
+                }
+              });
             },
             hoverColor: Colors.red,
-            // hoverElevation: 5,
+            // hoverColor: Colors.green,
+            
+            // hoverColor: Color.fromARGB(255, 134, 99, 99),
+            // hoverColor: Colors.grey[100],
+
+            // hoverElevation: 1,
             // onFocus
             child: Icon(Icons.restart_alt_rounded,color:Colors.white),
           ),

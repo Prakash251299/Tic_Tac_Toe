@@ -28,14 +28,12 @@ To run this project run the command in the directory
 
 ## Installation
 
-Install my-project
+Install my-application
+https://firebasestorage.googleapis.com/v0/b/tic-tac-toe-c6e57.appspot.com/o/app-release.apk?alt=media&token=9c9d9f55-93b2-418c-8640-b924d79d0fab
 
 ```bash
   Will upload the apk file soon...
 ```
-    
-## 🚀 About Me
-I'm an application developer...
 
 ## 🔗 Links
 [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/Prakash251299)

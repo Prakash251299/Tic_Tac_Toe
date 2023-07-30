@@ -27,7 +27,6 @@ To run this project run the command in the directory
 
 
 ## Installation
-<br>
 Download my-application
 <br>
 https://firebasestorage.googleapis.com/v0/b/tic-tac-toe-c6e57.appspot.com/o/app-release.apk?alt=media&token=9c9d9f55-93b2-418c-8640-b924d79d0fab

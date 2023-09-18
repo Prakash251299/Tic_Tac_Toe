@@ -3,6 +3,11 @@
 
 A simple Tic Tac Toe game built in Flutter.
 
+## Screenshots
+![first](https://github.com/Prakash251299/Tic_Tac_Toe/assets/88026044/de474894-38cf-42f5-a9b8-5d0dc70a1619)
+![second](https://github.com/Prakash251299/Tic_Tac_Toe/assets/88026044/c22598f4-f532-4472-bbe7-4069a58619c6)
+![third](https://github.com/Prakash251299/Tic_Tac_Toe/assets/88026044/047bff01-1605-4634-9ad8-102f22a189f1)
+![Fourth](https://github.com/Prakash251299/Tic_Tac_Toe/assets/88026044/044b7af5-6273-48bd-8501-b314c14ac67e)
 
 ## Deployment
 
@@ -35,3 +40,5 @@ https://firebasestorage.googleapis.com/v0/b/tic-tac-toe-c6e57.appspot.com/o/app-
 ## 🔗 Links
 [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/Prakash251299)
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/prakash-pratap-singh-3238101bb)
+
+
